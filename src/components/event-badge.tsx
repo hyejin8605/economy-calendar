@@ -24,7 +24,7 @@ export function EventBadge({ event, compact, onClick }: EventBadgeProps) {
     <button
       onClick={onClick}
       className={cn(
-        "w-full text-left rounded px-1.5 py-0.5 text-xs truncate border cursor-pointer transition-colors hover:opacity-80",
+        "w-full text-left rounded px-1.5 py-0.5 text-xs overflow-hidden text-ellipsis border cursor-pointer transition-colors hover:opacity-80",
         cfg.bg,
         cfg.border,
         cfg.color,
