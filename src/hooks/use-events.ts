@@ -14,8 +14,12 @@ export function useEvents() {
 
   useEffect(() => {
     fetch("/data/events.json")
-      .then((r) => r.json())
-      .then(setEvents);
+      .then((r) => {
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        return r.json();
+      })
+      .then(setEvents)
+      .catch((err) => console.error("Failed to load events:", err));
   }, []);
 
   const filtered = useMemo(
