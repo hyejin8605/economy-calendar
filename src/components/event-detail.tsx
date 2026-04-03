@@ -12,13 +12,6 @@ import type { EconomicEvent } from "@/lib/types";
 
 function formatValue(v: number | string | null) {
   if (v === null || v === undefined) return "—";
-  if (typeof v === "number") {
-    if (Math.abs(v) >= 1e9) return `${(v / 1e9).toFixed(2)}B`;
-    if (Math.abs(v) >= 1e6) return `${(v / 1e6).toFixed(2)}M`;
-    if (Math.abs(v) >= 1e3 && Number.isInteger(v / 1000))
-      return `${(v / 1e3).toFixed(1)}K`;
-    return v.toLocaleString();
-  }
   return String(v);
 }
 

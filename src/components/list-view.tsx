@@ -229,10 +229,5 @@ function SortTh({
 
 function formatCell(v: number | string | null) {
   if (v === null || v === undefined) return "—";
-  if (typeof v === "number") {
-    if (Math.abs(v) >= 1e9) return `${(v / 1e9).toFixed(1)}B`;
-    if (Math.abs(v) >= 1e6) return `${(v / 1e6).toFixed(1)}M`;
-    return v.toLocaleString("en-US", { maximumFractionDigits: 4 });
-  }
   return String(v);
 }
