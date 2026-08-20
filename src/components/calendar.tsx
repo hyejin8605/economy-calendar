@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { EventDetail } from "@/components/event-detail";
 import { FilterBar } from "@/components/filter-bar";
@@ -25,12 +25,35 @@ export function Calendar() {
     null,
   );
 
-  // Month navigation (default: April 2026 to match data)
-  const [year, setYear] = useState(2026);
-  const [month, setMonth] = useState(3); // 0-indexed, 3 = April
+  // Month navigation (default: today; adjusted below if today's month has no data)
+  const today = useMemo(() => new Date(), []);
+  const [year, setYear] = useState(today.getFullYear());
+  const [month, setMonth] = useState(today.getMonth());
 
   // Week navigation
-  const [weekBase, setWeekBase] = useState(() => new Date(2026, 3, 1));
+  const [weekBase, setWeekBase] = useState(today);
+
+  const didInitFromData = useRef(false);
+  useEffect(() => {
+    if (didInitFromData.current) return;
+    if (filtered.length === 0) return;
+    didInitFromData.current = true;
+
+    const todayPrefix = `${today.getFullYear()}-${String(
+      today.getMonth() + 1,
+    ).padStart(2, "0")}`;
+    const hasThisMonth = filtered.some((e) => e.date.startsWith(todayPrefix));
+    if (hasThisMonth) return;
+
+    let earliest = filtered[0].date;
+    for (const e of filtered) {
+      if (e.date < earliest) earliest = e.date;
+    }
+    const [ey, em, ed] = earliest.split("-").map(Number);
+    setYear(ey);
+    setMonth(em - 1);
+    setWeekBase(new Date(ey, em - 1, ed));
+  }, [filtered, today]);
 
   const prevMonth = useCallback(() => {
     setMonth((m) => {
