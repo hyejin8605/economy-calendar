@@ -134,14 +134,14 @@ export function MonthView({
         open={selectedDate !== null}
         onOpenChange={(open) => !open && setSelectedDate(null)}
       >
-        <DialogContent className="max-w-lg max-h-[80vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>{selectedDate} 이벤트</DialogTitle>
+        <DialogContent className="flex w-[92vw] max-w-[900px] sm:max-w-[900px] max-h-[85vh] flex-col overflow-hidden">
+          <DialogHeader className="shrink-0">
+            <DialogTitle className="pr-8">{selectedDate} 이벤트</DialogTitle>
           </DialogHeader>
-          <div className="text-xs text-muted-foreground mb-2">
+          <div className="shrink-0 text-xs text-muted-foreground">
             총 {selectedDateEvents.length}개
           </div>
-          <div className="space-y-1">
+          <div className="min-h-0 flex-1 space-y-1 overflow-x-hidden overflow-y-auto pr-1">
             {selectedDateEvents.map((ev, i) => {
               const imp = IMPORTANCE_CONFIG[ev.importance];
               return (
@@ -151,19 +151,24 @@ export function MonthView({
                     setSelectedDate(null);
                     onSelectEvent(ev);
                   }}
-                  className="w-full text-left rounded-lg border p-3 hover:bg-muted/50 transition-colors cursor-pointer"
+                  className="w-full overflow-hidden text-left rounded-lg border p-3 hover:bg-muted/50 transition-colors cursor-pointer"
                 >
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs text-muted-foreground w-12 shrink-0">
+                  <div className="flex w-full min-w-0 items-center gap-2 sm:gap-3">
+                    <span className="w-11 shrink-0 text-xs tabular-nums text-muted-foreground">
                       {ev.time || "--:--"}
                     </span>
-                    <span className="text-xs font-medium w-8 shrink-0">
+                    <span className="w-8 shrink-0 text-xs font-medium">
                       {ev.country}
                     </span>
-                    <span className="text-sm truncate flex-1">{ev.event}</span>
+                    <span
+                      className="min-w-0 flex-1 truncate text-sm"
+                      title={ev.event}
+                    >
+                      {ev.event}
+                    </span>
                     <Badge
                       className={cn(
-                        "shrink-0 border-0 text-[10px]",
+                        "shrink-0 whitespace-nowrap border-0 text-[10px]",
                         imp.bg,
                         imp.color,
                       )}
